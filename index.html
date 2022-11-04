@@ -11,7 +11,21 @@
   <body>
     <header>
       <h1>TVshow project</h1>
-      <input type="text" name="" id="searchWordInGallery" />
+      <input
+        type="text"
+        name=""
+        id="searchWordInGallery"
+        placeholder="Look for your episode"
+      />
+
+      <div>
+        <select id="optionListEpisode">
+          <option value="none">All Episodes</option>
+        </select>
+      </div>
+
+      <button id="showAllEpisodes">Show all episodes</button>
+      <p id="episodeDisplaying"></p>
     </header>
 
     <main id="gallerySeries"></main>

@@ -35,5 +35,10 @@ export function episodeCard(episodes) {
     episodeCard.appendChild(episodeCardItem);
   });
 
+  //Show Displaying
+  const episodeDisplaying = document.getElementById("episodeDisplaying");
+  episodeDisplaying.className = "display";
+  episodeDisplaying.innerText = `Displaying ${episodes.length}/73`;
+
   gallerySeries.appendChild(episodeCard);
 }
