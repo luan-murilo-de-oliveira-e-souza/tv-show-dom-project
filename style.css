@@ -22,10 +22,10 @@ ul {
   margin: 0 auto;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: repeat(3, minmax(260px, 420px));
+  grid-template-columns: repeat(4, minmax(260px, 420px));
   justify-content: center;
   gap: 26px;
-  min-height: 600px;
+  min-height: 400px;
 }
 
 li {
@@ -57,6 +57,11 @@ img {
   margin-right: auto;
   border-radius: 10px;
   border: 2px solid rgb(0, 0, 0);
+}
+
+li:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
 .summary {

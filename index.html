@@ -19,6 +19,9 @@
       />
 
       <div>
+        <select id="optionListSerie">
+          <option value="none">All Series</option>
+        </select>
         <select id="optionListEpisode">
           <option value="none">All Episodes</option>
         </select>
@@ -28,11 +31,18 @@
       <p id="episodeDisplaying"></p>
     </header>
 
-    <main id="gallerySeries"></main>
+    <main id="gallerySeries">
+      <div id="errorMessage">
+        "There was a connection problem, try refreshing the page or contact
+        support."
+      </div>
+    </main>
     <footer></footer>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
+    <script src="script.js"></script>
+    <script src="shows.js"></script>
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js" type="module"></script>
