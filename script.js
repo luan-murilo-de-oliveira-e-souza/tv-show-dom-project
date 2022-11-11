@@ -8,45 +8,30 @@ episodeDisplaying.className = "display";
 const optionListSerie = document.getElementById("optionListSerie");
 const optionListEpisode = document.getElementById("optionListEpisode");
 let allEpisodes = [];
+let episodeOrSerie = "";
 
-const allSeries = getAllShows().sort((a, b) => a.name.localeCompare(b.name));
+const allSeriesOrEpisodes = getAllShows().sort((a, b) =>
+  a.name.localeCompare(b.name)
+);
 
-//Get all data from JSON - Episodes
-async function fetchEpisodeLive(SHOW_ID) {
-  await fetch(`https://api.tvmaze.com/shows/${SHOW_ID}/episodes`)
-    .then((response) => {
-      if (response.status === 200) {
-        errorMessage.style.display = "none";
-        return response.json();
-      } else {
-        throw new Error("Not Found ...");
-      }
-    })
-    .then((data) => {
-      allEpisodes = data.map((episode) => {
-        return { ...episode };
-      });
-      setup();
-    })
-    .catch((error) => (errorMessage.style.display = "block"));
-}
+//fetchEpisodeLive(1195);
 
-fetchEpisodeLive(1195);
+window.onload = setup(allSeriesOrEpisodes);
 
 //Setup all functions
-function setup() {
-  buildGallery(allEpisodes);
-  searchEpisodeByWord(allEpisodes);
-  selectSerieOnList(allSeries);
-  selectEpisodeOnList(allEpisodes);
-  episodeDisplaying.innerHTML = `Displaying: ${allEpisodes.length} episodes`;
+function setup(allSeriesOrEpisodes) {
+  //console.log(allSeriesOrEpisodes);
+  buildGalleryInitial(allSeriesOrEpisodes);
+  searchEpisodeByWord(allSeriesOrEpisodes);
+  selectSerieOnList(allSeriesOrEpisodes);
+  selectEpisodeOnList(allSeriesOrEpisodes);
+  episodeDisplaying.innerHTML = `Displaying: ${allSeriesOrEpisodes.length} episodes`;
 }
 
-//Create Gallery
-async function buildGallery(ListAllEpisodes) {
-  console.log("List of All episodes", ListAllEpisodes);
-  if (ListAllEpisodes.length > 0) {
-    episodeCard(ListAllEpisodes);
+//Create Gallery Initial
+function buildGalleryInitial(ListAllSeries) {
+  if (ListAllSeries.length > 0) {
+    episodeCard(ListAllSeries);
   } else {
     searchWordInGallery.value = "";
     episodeDisplaying.innerHTML = `Displaying: 0 episodes`;
@@ -70,11 +55,13 @@ function searchEpisodeByWord(ListAllEpisodes) {
 
 //Select serie from List
 function selectSerieOnList(listOfSeries) {
+  // console.log(listOfSeries);
   listOfSeries.sort((a, b) => a.name.localeCompare(b.name));
   listOfSeries.forEach((serie) => {
     const selectSerie = document.createElement("option");
     selectSerie.innerHTML = `${serie.name}`;
     selectSerie.value = serie.id;
+    //console.log(serie.id);
     optionListSerie.appendChild(selectSerie);
   });
 }
@@ -83,6 +70,7 @@ optionListSerie.addEventListener("change", FilterSelectSerie);
 
 function FilterSelectSerie() {
   let valueSerie = optionListSerie.value;
+  // console.log(valueSerie);
   fetchEpisodeLive(valueSerie);
 }
 
@@ -96,12 +84,17 @@ function selectEpisodeOnList(ListAllEpisodes) {
   ListAllEpisodes.forEach((episode) => {
     const selectEpisode = document.createElement("option");
     selectEpisode.innerText = "All episodes";
-    selectEpisode.innerText = `S${episode.season
-      .toString()
-      .padStart(2, "0")}E${episode.number.toString().padStart(2, "0")} - ${
-      episode.name
-    }`;
-    optionListEpisode.appendChild(selectEpisode);
+    if (episode.season && episode.number && episode.name) {
+      selectEpisode.innerText = `S${episode.season
+        .toString()
+        .padStart(2, "0")}E${episode.number.toString().padStart(2, "0")} - ${
+        episode.name
+      }`;
+
+      console.log(selectEpisode.innerText);
+      //selectEpisode.sort();
+      optionListEpisode.appendChild(selectEpisode);
+    }
   });
   optionListEpisode.addEventListener("change", () => {
     if (optionListEpisode.value == "All episodes") {
@@ -131,11 +124,34 @@ function selectEpisodeOnList(ListAllEpisodes) {
   });
 }
 
+//Get all data from JSON - Episodes
+async function fetchEpisodeLive(SHOW_ID) {
+  await fetch(`https://api.tvmaze.com/shows/${SHOW_ID}/episodes`)
+    .then((response) => {
+      if (response.status === 200) {
+        errorMessage.style.display = "none";
+        return response.json();
+      } else {
+        throw new Error("Not Found ...");
+      }
+    })
+    .then((data) => {
+      allEpisodes = data.map((episode) => {
+        return { ...episode };
+      });
+      //setup();
+      optionListEpisode.value = "value";
+      console.log(allEpisodes);
+      setup(allEpisodes);
+    })
+    .catch((error) => (errorMessage.style.display = "block"));
+}
+
 //Show all Episodes
 document.getElementById("showAllEpisodes").onclick = function () {
   searchWordInGallery.value = "";
-  buildGallery(allEpisodes);
+  optionListSerie.options.length = 1;
+  optionListEpisode.options.length = 1;
+  window.onload = setup(allSeriesOrEpisodes);
   episodeDisplaying.innerHTML = `Displaying: ${allEpisodes.length} episodes`;
 };
-
-window.onload = setup;
