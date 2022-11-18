@@ -50,7 +50,7 @@ h3 {
 }
 
 img {
-  height: 150px;
+  height: 230px;
   width: 95%;
   display: block;
   margin-left: auto;
@@ -64,8 +64,15 @@ li:hover {
   cursor: pointer;
 }
 
-.summary {
+.summary,
+.showRate,
+.showStatus,
+.showGenres {
   margin: 10px;
+}
+
+.showRunTime {
+  margin: 10px 10px 20px 10px;
 }
 
 searchWordInGallery {

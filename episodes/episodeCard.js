@@ -1,8 +1,10 @@
+import { fetchEpisodeLive } from "../script.js";
+
 const optionListSerie = document.getElementById("optionListSerie");
 
 export function episodeCard(episodes) {
-  //console.log(episodes);
   const gallerySeries = document.getElementById("gallerySeries");
+  //Clear the gallery
   gallerySeries.innerHTML = "";
 
   const episodeCard = document.createElement("ul");
@@ -10,13 +12,15 @@ export function episodeCard(episodes) {
     const episodeCardItem = document.createElement("li");
     const nameEpisode = document.createElement("h3");
 
+    //Get series list text
     const textSelect =
       optionListSerie.options[optionListSerie.selectedIndex].text;
 
+    //Compares if the list of series is equal to "All series",
+    //if it is it will create a series type card, if not it will be an episode type card
     if (textSelect == "All Series") {
       //Series
       //Series Name
-      console.log(optionListSerie.options[optionListSerie.selectedIndex].text);
       nameEpisode.innerText = episode.name;
       episodeCardItem.appendChild(nameEpisode);
 
@@ -51,6 +55,16 @@ export function episodeCard(episodes) {
       showRunTime.className = "showRunTime";
       showRunTime.innerHTML = `Runtime: ${episode.runtime}`;
       episodeCardItem.appendChild(showRunTime);
+
+      //Open Link
+      episodeCardItem.addEventListener("click", function () {
+        const text = episode.name;
+        const $select = document.getElementById("optionListSerie");
+        const $options = Array.from($select.options);
+        const optionToSelect = $options.find((item) => item.text === text);
+        optionToSelect.selected = true;
+        fetchEpisodeLive(episode.id);
+      });
     } else {
       //Episodes
       if (episode.season && episode.number && episode.name) {
@@ -71,6 +85,13 @@ export function episodeCard(episodes) {
 
         episodeCardItem.appendChild(episodeImg);
       }
+
+      //Create link to website
+      episodeCardItem.addEventListener("click", function () {
+        if (episode.url) {
+          window.location.assign(episode.url);
+        }
+      });
     }
 
     //Episode summary
@@ -86,12 +107,12 @@ export function episodeCard(episodes) {
       episodeCardItem.appendChild(episodeSummary);
     }
 
-    //Open Link
-    episodeCardItem.addEventListener("click", function () {
-      if (episode.url) {
-        window.location.assign(episode.url);
-      }
-    });
+    // //Open Link
+    // episodeCardItem.addEventListener("click", function () {
+    //   if (episode.url) {
+    //     window.location.assign(episode.url);
+    //   }
+    // });
 
     episodeCard.appendChild(episodeCardItem);
   });

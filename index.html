@@ -9,15 +9,18 @@
   </head>
 
   <body>
+    <!-- Name of Site, input for filter, select serie and select episode, button to clear search -->
+
     <header>
       <h1>TVshow project</h1>
       <input
         type="text"
         name=""
         id="searchWordInGallery"
-        placeholder="Look for your episode"
+        placeholder="Do your research"
       />
 
+      <!-- Only the episodes appear when you select the series       -->
       <select id="optionListSerie">
         <option value="none">All Series</option>
       </select>
@@ -25,10 +28,12 @@
         <option value="none"></option>
       </select>
 
-      <button id="showAllEpisodes">Show all episodes</button>
-      <p id="episodeDisplaying"></p>
+      <!-- Return to initial settings -->
+      <button id="ClearSearch">Clear search</button>
+      <p id="serieOrEpisodeDisplaying"></p>
     </header>
 
+    <!-- Place where the image of my series and episodes will be available -->
     <main id="gallerySeries">
       <div id="errorMessage">
         "There was a connection problem, try refreshing the page or contact
